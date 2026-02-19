@@ -517,7 +517,7 @@ test.describe("Tokens: Apply token", () => {
     await dimensionSMTokenPill.nth(1).click();
 
     // Change token from dropdown
-    const dimensionTokenOptionXl = measuresSection.getByRole('option', { name: 'dimension.xl' })
+    const dimensionTokenOptionXl = measuresSection.getByLabel("dimension.xl");
     await expect(dimensionTokenOptionXl).toBeVisible();
     await dimensionTokenOptionXl.click();
 
@@ -750,7 +750,7 @@ test.describe("Tokens: Apply token", () => {
     });
     await tokenDropdown.click();
 
-    const widthOptionSmall = firstStrokeRow.getByRole('option', { name: 'width-small' });
+    const widthOptionSmall = firstStrokeRow.getByLabel("width-small");
     await expect(widthOptionSmall).toBeVisible();
     await widthOptionSmall.click();
     const StrokeWidthPillSmall = firstStrokeRow.getByRole("button", {
