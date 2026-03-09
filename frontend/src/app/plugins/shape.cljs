@@ -1200,6 +1200,7 @@
                  (u/display-not-valid :export value)
 
                  :else
+                 ;; TODO: Change to export through wasm
                  (let [shape (u/locate-shape file-id page-id id)
                        payload
                        {:cmd :export-shapes
