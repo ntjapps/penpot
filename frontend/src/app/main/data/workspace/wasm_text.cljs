@@ -22,26 +22,33 @@
    [beicon.v2.core :as rx]
    [potok.v2.core :as ptk]))
 
+(defn get-wasm-text-new-size
+  "Computes the new {width, height} for a text shape from WASM text layout.
+  Returns nil if grow-type is :fixed (no resize needed)."
+  ([shape]
+   (get-wasm-text-new-size shape (:content shape)))
+
+  ([{:keys [id selrect grow-type] :as shape} content]
+   (when (and id (not= :fixed grow-type))
+     (wasm.api/use-shape id)
+     (wasm.api/set-shape-text-content id content)
+     (wasm.api/set-shape-text-images id content)
+     (let [dimension (wasm.api/get-text-dimensions)]
+       {:width  (if (#{:fixed :auto-height} grow-type)
+                  (:width selrect)
+                  (:width dimension))
+        :height (:height dimension)}))))
+
 (defn resize-wasm-text-modifiers
   ([shape]
    (resize-wasm-text-modifiers shape (:content shape)))
 
   ([{:keys [id points selrect grow-type] :as shape} content]
-   (when id
-     (wasm.api/use-shape id)
-     (wasm.api/set-shape-text-content id content)
-     (wasm.api/set-shape-text-images id content)
-
-     (let [dimension (wasm.api/get-text-dimensions)
-           width-scale (if (#{:fixed :auto-height} grow-type)
-                         1.0
-                         (/ (:width dimension) (:width selrect)))
-           height-scale (if (= :fixed grow-type)
-                          1.0
-                          (/ (:height dimension) (:height selrect)))
-           resize-v  (gpt/point width-scale height-scale)
-           origin    (first points)]
-
+   (when-let [new-size (get-wasm-text-new-size shape content)]
+     (let [width-scale  (/ (:width new-size) (:width selrect))
+           height-scale (/ (:height new-size) (:height selrect))
+           resize-v     (gpt/point width-scale height-scale)
+           origin       (first points)]
        {id
         {:modifiers
          (ctm/resize-modifiers
