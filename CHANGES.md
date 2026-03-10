@@ -36,6 +36,7 @@
 - Fix error activating a set with invalid shadow token applied [Taiga #13528](https://tree.taiga.io/project/penpot/issue/13528)
 - Fix component "broken" after variant switch [Taiga #12984](https://tree.taiga.io/project/penpot/issue/12984)
 - Fix incorrect query for file versions [Github #8463](https://github.com/penpot/penpot/pull/8463)
+- Fix crash when pasting non-map transit clipboard data [Github #8580](https://github.com/penpot/penpot/pull/8580)
 
 ## 2.13.3
 
