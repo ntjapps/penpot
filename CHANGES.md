@@ -36,6 +36,7 @@
 - Fix error activating a set with invalid shadow token applied [Taiga #13528](https://tree.taiga.io/project/penpot/issue/13528)
 - Fix component "broken" after variant switch [Taiga #12984](https://tree.taiga.io/project/penpot/issue/12984)
 - Fix incorrect query for file versions [Github #8463](https://github.com/penpot/penpot/pull/8463)
+- Fix crash in select component when options vector is empty [Github #8578](https://github.com/penpot/penpot/pull/8578)
 
 ## 2.13.3
 
