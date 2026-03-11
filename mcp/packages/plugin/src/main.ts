@@ -50,6 +50,25 @@ function sendTaskResponse(response: any): void {
     }
 }
 
+function normalizeWebSocketUrl(rawUrl: string): string {
+    try {
+        const url = new URL(rawUrl, window.location.href);
+        if (url.protocol === "http:") {
+            url.protocol = "ws:";
+        } else if (url.protocol === "https:") {
+            url.protocol = "wss:";
+        }
+
+        if (!url.pathname || url.pathname === "/") {
+            url.pathname = PENPOT_MCP_PLUGIN_WEBSOCKET_PATH || "/ws";
+        }
+
+        return url.toString();
+    } catch {
+        return rawUrl;
+    }
+}
+
 /**
  * Establishes a WebSocket connection to the MCP server.
  */
@@ -60,9 +79,15 @@ function connectToMcpServer(baseUrl?: string, token?: string): void {
     }
 
     try {
-        let wsUrl = baseUrl || PENPOT_MCP_WEBSOCKET_URL;
+        let wsUrl = normalizeWebSocketUrl(baseUrl || PENPOT_MCP_WEBSOCKET_URL);
         if (isMultiUserMode && token) {
-            wsUrl += `?userToken=${encodeURIComponent(token)}`;
+            try {
+                const url = new URL(wsUrl);
+                url.searchParams.set("userToken", token);
+                wsUrl = url.toString();
+            } catch {
+                wsUrl += `${wsUrl.includes("?") ? "&" : "?"}userToken=${encodeURIComponent(token)}`;
+            }
         }
 
         ws = new WebSocket(wsUrl);

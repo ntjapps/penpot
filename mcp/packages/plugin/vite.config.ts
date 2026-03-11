@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import livePreview from "vite-live-preview";
 
 let WS_URI = process.env.WS_URI || "http://localhost:4402";
+let WS_PATH = process.env.PENPOT_MCP_PLUGIN_WEBSOCKET_PATH || "/ws";
 let MULTI_USER_MODE = process.env.MULTI_USER_MODE === "true";
 const configuredAllowedHosts = (process.env.PENPOT_MCP_PLUGIN_ALLOWED_HOSTS || process.env.PENPOT_MCP_SERVER_ADDRESS || "")
     .split(",")
@@ -22,6 +23,7 @@ let ALLOWED_HOSTS = Array.from(new Set([...configuredAllowedHosts, pluginPublicH
 
 console.log("Will define IS_MULTI_USER_MODE as:", JSON.stringify(MULTI_USER_MODE));
 console.log("Will define PENPOT_MCP_WEBSOCKET_URL as:", JSON.stringify(WS_URI));
+console.log("Will define PENPOT_MCP_PLUGIN_WEBSOCKET_PATH as:", JSON.stringify(WS_PATH));
 console.log("Will allow preview hosts:", JSON.stringify(ALLOWED_HOSTS));
 
 export default defineConfig({
@@ -56,5 +58,6 @@ export default defineConfig({
     define: {
         IS_MULTI_USER_MODE: JSON.stringify(process.env.MULTI_USER_MODE === "true"),
         PENPOT_MCP_WEBSOCKET_URL: JSON.stringify(WS_URI),
+        PENPOT_MCP_PLUGIN_WEBSOCKET_PATH: JSON.stringify(WS_PATH),
     },
 });
