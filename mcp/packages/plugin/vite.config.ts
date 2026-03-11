@@ -8,6 +8,7 @@ const rootPkg = require("../../package.json");
 let WS_URI = process.env.WS_URI || "http://localhost:4402";
 let SERVER_HOST = process.env.PENPOT_MCP_PLUGIN_SERVER_HOST ?? "localhost";
 let MCP_VERSION = JSON.stringify(rootPkg.version);
+let WS_PATH = process.env.PENPOT_MCP_PLUGIN_WEBSOCKET_PATH || "/ws";
 const configuredAllowedHosts = (process.env.PENPOT_MCP_PLUGIN_ALLOWED_HOSTS || process.env.PENPOT_MCP_SERVER_ADDRESS || "")
     .split(",")
     .map((host) => host.trim())
@@ -27,6 +28,7 @@ let ALLOWED_HOSTS = Array.from(new Set([...configuredAllowedHosts, pluginPublicH
 
 console.log("PENPOT_MCP_WEBSOCKET_URL:", JSON.stringify(WS_URI));
 console.log("PENPOT_MCP_VERSION:", MCP_VERSION);
+console.log("PENPOT_MCP_PLUGIN_WEBSOCKET_PATH:", JSON.stringify(WS_PATH));
 console.log("Will allow preview hosts:", JSON.stringify(ALLOWED_HOSTS));
 
 export default defineConfig({
@@ -61,5 +63,6 @@ export default defineConfig({
     define: {
         PENPOT_MCP_WEBSOCKET_URL: JSON.stringify(WS_URI),
         PENPOT_MCP_VERSION: MCP_VERSION,
+        PENPOT_MCP_PLUGIN_WEBSOCKET_PATH: JSON.stringify(WS_PATH),
     },
 });
