@@ -9,7 +9,11 @@ let WS_URI = process.env.WS_URI || "http://localhost:4402";
 let SERVER_HOST = process.env.PENPOT_MCP_PLUGIN_SERVER_HOST ?? "localhost";
 let MCP_VERSION = JSON.stringify(rootPkg.version);
 let WS_PATH = process.env.PENPOT_MCP_PLUGIN_WEBSOCKET_PATH || "/ws";
-const configuredAllowedHosts = (process.env.PENPOT_MCP_PLUGIN_ALLOWED_HOSTS || process.env.PENPOT_MCP_SERVER_ADDRESS || "")
+const configuredAllowedHosts = (
+    process.env.PENPOT_MCP_PLUGIN_ALLOWED_HOSTS ||
+    process.env.PENPOT_MCP_SERVER_ADDRESS ||
+    ""
+)
     .split(",")
     .map((host) => host.trim())
     .filter(Boolean);
